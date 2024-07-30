@@ -1,0 +1,38 @@
+﻿<template id="editCompany">
+	<div>
+		<h2>Edit Company</h2>
+		<form v-on:submit="updateCompany(Company.CompanyId)">
+			<div class="form-group">
+				<label for="edit-name">Name:</label>
+				<input class="form-control" id="add-name" v-model="Company.Name" required>
+			</div>
+			<div class="form-group">
+				<label for="edit-phone">Phone:</label>
+				<input type="number" class="form-control" id="add-phone" v-model="company.phone" required>
+			</div>
+			<div class="form-group">
+				<label for="edit-address1">Street Address 1:</label>
+				<input class="form-control" id="edit-address1" v-model="company.address.streetAddress1" required>
+			</div>
+			<div class="form-group">
+				<label for="edit-address2">Street Address 2:</label>
+				<input class="form-control" id=edit-address2 v-model="company.address.streetAddress2">
+			</div>
+			<div class="form-group">
+				<label for="edit-region">Region:</label>
+				<input class="form-control" id="edit-region" v-model="company.address.region" required>
+			</div>
+			<div class="form-group">
+				<label for="edit-postcode">Postcode:</label>
+				<input class="form-control" id="edit-postcode" v-model="company.address.postCode" required>
+			</div>
+			<div class="form-group">
+				<label for="edit-country">Country:</label>
+				<input class="form-control" id="edit-country" v-model="company.address.country.name" required>
+			</div>
+			<div>
+				<button type="submit">Update</button>
+			</div>
+		</form>
+	</div>
+</template>

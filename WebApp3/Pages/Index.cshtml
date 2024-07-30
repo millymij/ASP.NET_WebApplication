@@ -1,0 +1,17 @@
+﻿@page
+@model IndexModel
+@{
+
+}
+
+<div id="vue-app">
+    <router-view></router-view>
+</div>
+
+@await Html.PartialAsync("/Pages/Templates/homepage.cshtml")
+@await Html.PartialAsync("/Pages/Templates/addCompany.cshtml")
+@await Html.PartialAsync("/Pages/Templates/editCompany.cshtml")
+@await Html.PartialAsync("/Pages/Templates/listCompanies.cshtml")
+
+
+

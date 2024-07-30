@@ -1,0 +1,226 @@
+﻿<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
+
+<template id="list-company-template">
+
+	<div>
+		<div>
+			<div class="table-title">
+				<div class="row">
+					<div class="col-sm-6">
+						<h2> <b>Manage Companies</b></h2>
+					</div>
+					<div class="col-sm-6">
+						<button id="addButton" class="btn btn-success" data-toggle="modal" v-on:click="showAddModal()">
+							<i class="material-icons">&#xE147;</i> <span>Add New Company</span></a>
+						</button>
+					</div>
+				</div>
+			</div>
+
+			<table class="table table-striped table-hover">
+				<thead>
+					<tr>
+						<th>Name</th>
+						<th>PostCode & Country</th>
+						<th>Phone</th>
+						<th>Actions</th>
+					</tr>
+				</thead>
+
+				<tbody>
+					<tr v-for="company in companies" :key="company.id">
+						<td>{{company.Name}}</td>
+						<td>
+							<ul>
+								<li v-for="address in company.AddressList" :key="address.id">
+									{{company.AddressList[0].PostCode}} , {{company.AddressList[0].Country.Name}}
+								</li>
+							</ul>
+						</td>
+						<td>{{company.Phone}}</td>
+						<td>
+							<button class="listButton" data-toggle="modal" v-on:click="showViewModal(company)"><i class="material-icons" data-toggle="tooltip" title="List">menu</i></button>
+							<button class="editButton" data-toggle="modal" v-on:click="showEditModal(company)"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></button>
+							<button class="deleteButton" data-toggle="modal" v-on:click="showDeleteModal(company.CompanyId)"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></button>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+
+		<!-- Add Company Modal HTML -->
+		<div id="addCompanyModal" class="modal fade">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h4 class="modal-title">Add Company</h4>
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true" v-on:click="closeAddModal()">&times;</button>
+					</div>
+					<div class="modal-body">
+						<div class="form-group">
+							<label>Company Name</label>
+							<input type="text" class="form-control" v-model="addCompanyModel.Name" required>
+						</div>
+						<div class="form-group">
+							<label>Phone</label>
+							<input type="text" class="form-control" v-model="addCompanyModel.Phone" required>
+						</div>
+						<div class="form-group">
+							<label>Street Address 1</label>
+							<input type="text" class="form-control" v-model="addCompanyModel.AddressList[0].StreetAddress1" required>
+						</div>
+						<div class="form-group">
+							<label>Street Address 2</label>
+							<input type="text" class="form-control" v-model="addCompanyModel.AddressList[0].StreetAddress2">
+						</div>
+						<div class="form-group">
+							<label>Region</label>
+							<input type="text" class="form-control" v-model="addCompanyModel.AddressList[0].Region">
+						</div>
+						<div class="form-group">
+							<label>PostCode</label>
+							<input type="text" class="form-control" v-model="addCompanyModel.AddressList[0].PostCode">
+						</div>
+						<div class="form-group">
+							<label>Country</label>
+							<input type="text" class="form-control" v-model="addCompanyModel.AddressList[0].Country.Name">
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" id="cancelButton" class="btn btn-default" data-dismiss="modal" v-on:click="closeAddModal()">Cancel</button>
+						<button type="button" class="btn btn-success" value="Add" v-on:click="addCompany(addCompanyModel)">Add</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+
+		<!-- View Modal HTML -->
+		<div id="viewCompanyModal" class="modal fade">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h4 class="modal-title">View Company</h4>
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true" v-on:click="closeViewModal()">&times;</button>
+					</div>
+					<form>
+						<div class="modal-body">
+							<div class="form-group">
+								<label>Company Name</label>
+								<input type="text" class="form-control" v-model="editCompanyModel.Name" disabled>
+							</div>
+							<div class="form-group">
+								<label>Phone</label>
+								<input type="text" class="form-control" v-model="editCompanyModel.Phone" disabled>
+							</div>
+							<div class="form-group">
+								<label>Street Address 1</label>
+								<input type="text" class="form-control" v-model="editCompanyModel.AddressList[0].StreetAddress1" disabled>
+							</div>
+							<div class="form-group">
+								<label>Street Address 2</label>
+								<input type="text" class="form-control" v-model="editCompanyModel.AddressList[0].StreetAddress2" disabled>
+							</div>
+							<div class="form-group">
+								<label>Region</label>
+								<input type="text" class="form-control" v-model="editCompanyModel.AddressList[0].Region" disabled>
+							</div>
+							<div class="form-group">
+								<label>PostCode</label>
+								<input type="text" class="form-control" v-model="editCompanyModel.AddressList[0].PostCode" disabled>
+							</div>
+							<div class="form-group">
+								<label>Country</label>
+								<input type="text" class="form-control" v-model="editCompanyModel.AddressList[0].Country.Name" disabled>
+							</div>
+						</div>
+						<div class="modal-footer">
+							<input type="button" id="cancelButton" class="btn btn-default" data-dismiss="modal" value="Cancel" v-on:click="closeViewModal()">
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+
+
+
+		<!-- Edit Modal HTML -->
+		<div id="editCompanyModal" class="modal fade">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h4 class="modal-title">Edit Company</h4>
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true" v-on:click="closeEditModal()">&times;</button>
+					</div>
+					<form>
+						<div class="modal-body">
+							<div class="form-group">
+								<label>Company Name</label>
+								<input type="text" class="form-control" v-model="editCompanyModel.Name" required>
+							</div>
+							<div class="form-group">
+								<label>Phone</label>
+								<input type="text" class="form-control" v-model="editCompanyModel.Phone" required>
+							</div>
+							<div class="form-group">
+								<label>Street Address 1</label>
+								<input type="text" class="form-control" v-model="editCompanyModel.AddressList[0].StreetAddress1" required>
+							</div>
+							<div class="form-group">
+								<label>Street Address 2</label>
+								<input type="text" class="form-control" v-model="editCompanyModel.AddressList[0].StreetAddress2">
+							</div>
+							<div class="form-group">
+								<label>Region</label>
+								<input type="text" class="form-control" v-model="editCompanyModel.AddressList[0].Region">
+							</div>
+							<div class="form-group">
+								<label>PostCode</label>
+								<input type="text" class="form-control" v-model="editCompanyModel.AddressList[0].PostCode">
+							</div>
+							<div class="form-group">
+								<label>Country</label>
+								<input type="text" class="form-control" v-model="editCompanyModel.AddressList[0].Country.Name">
+							</div>
+						</div>
+						<div class="modal-footer">
+							<input type="button" id="cancelButton" class="btn btn-default" data-dismiss="modal" value="Cancel" v-on:click="closeEditModal()">
+							<input type="button" class="btn btn-info" value="Save" v-on:click="editCompany(editCompanyModel)">
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+
+
+
+		<!-- Delete Modal HTML -->
+		<div id="deleteCompanyModal" class="modal fade">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<form>
+						<div class="modal-header">
+							<h4 class="modal-title">Delete Employee</h4>
+							<button type="button" class="close" data-dismiss="modal" aria-hidden="true" v-on:click="closeDeleteModal()">&times;</button>
+						</div>
+						<div class="modal-body">
+							<p>Are you sure you want to delete these Records?</p>
+							<p class="text-warning"><small>This action cannot be undone.</small></p>
+						</div>
+						<div class="modal-footer">
+							<input type="button" id="cancelButton" class="btn btn-default" data-dismiss="modal" value="Cancel" v-on:click="closeDeleteModal()">
+							<input type="button" class="btn btn-danger" value="Delete" v-on:click="deleteCompany()">
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+
+
+
+	</div>
+</template>
+
