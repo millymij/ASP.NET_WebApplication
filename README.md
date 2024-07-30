@@ -1,4 +1,4 @@
-# ASP.NET-WebApplication (2023)
+# ASP.NET_WebApplication (2023)
 
 ## Description
 The project is a CRUD (Create, Read, Update, Delete) web application designed to manage entities such as companies, addresses, and countries. It utilizes ASP.NET Core for the backend and Vue.js for the frontend, providing a dynamic user interface.
